@@ -13,7 +13,7 @@ var xmpp={
 	},
 	presence:function(toUid){
 
-		if(to) {
+		if(toUid) {
 
 			var pres=$pres({to:toUid})
 		}
@@ -158,14 +158,50 @@ app.controller("loginController",function($scope,$rootScope){
 
 
 
-app.controller("dashboardController",function($scope){
+app.controller("dashboardController",function($scope,$rootScope){
 
 	//Dashboard
+
+
 	$scope.logout=function(){
 
 		xmpp.disconnect()
 	}
+
+	$scope.$on("streamIncoming",function (event,body){
+
+		$scope.show_traffic(body.body,'out')
+
+	})
+	$scope.$on("streamOutgoing",function (event,body){
+
+		$scope.show_traffic(body.body,'out')
+
+	})
+
+	xmpp.conn.xmlInput=function(body){
+
+		$rootScope.$broadcast("streamIncoming", {body:body})
+	}
+	xmpp.conn.xmlOutput=function(body){
+
+		$rootScope.$broadcast("streamOutgoing", {body:body})
+	}
+
+
+	xmpp.presence()
+	
+	$scope.consoleLogs=[]
+	
+	$scope.show_traffic=function (body,type) {
+
+		console.log($scope.consoleLogs)
+		$scope.consoleLogs.push({body:Strophe.serialize(body),type:type})
+		$scope.$apply()	
+	}
 })
+
+
 
 app.controller("logController",function($scope) {
 	

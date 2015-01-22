@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="lib/fa/css/font-awesome.min.css">
+    <link href="mat/css/ripples.min.css" rel="stylesheet">
+     <link href="mat/css/material-wfont.min.css" rel="stylesheet">
     <script src="lib/jquery.min.js"></script>
     <script src="lib/angular.min.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>
@@ -12,23 +14,28 @@
     <title>XMPP Console and Debugger</title>
 </head>
 <body ng-controller="mainController">
-	<div class="container-fluid">
+
+<div class="container-fluid">
+
 <div class="row">
 
-<div class="col-md-10">
-	<div ng-view></div>
+<div class="col-md-10" style="padding-left:0; padding-right:0; margin-right:-1px;">
+<div ng-view></div>
+
 </div>
 <div class="sidebar col-md-2" ng-controller="logController">
-	<h4>Log</h4>
-	<ul class="log">
-		<li ng-repeat="log in logs track by $index">
-			{{log}}
-		</li>
-	</ul>
+    
+    <h4>Log</h4>
+    <div class="logBox">
+    <ul class="log">
+        <li ng-repeat="log in logs track by $index">
+            {{log}}
+        </li>
+    </ul>
+    </div>
 </div>
 </div>
 </div>
-<script src="main.js"></script>
 
 <style>
 /* Login Form */
@@ -36,10 +43,17 @@ body{
 
 
 }
-.navbar {
+nav.navbar {
 
-    border-radius:0;
+    margin-bottom:0;
 }
+nav.navbar-inverse{
+
+    background-color:#1D70B2 !important;
+    border-color:#186CAD;
+}
+
+
 button.navbar-right, p.navbar-right{
 
     margin-right:0;
@@ -91,25 +105,73 @@ div.login-form label {
 /* Sidebar */
 .sidebar{
 
-	border-left:1px solid #ddd;
-	overflow:auto;
-	background-color: #f5f5f5;
-	position:absolute;
-	right:0px;
-	top:0;
-	bottom:0;
+    border-left:1px solid #e7e7e7;
+    overflow:auto;
+    background-color: #f8f8f8;
+    min-height:700px;
+    padding:0;
 }
 .sidebar h4{
 
-	text-align:center;
-	border-bottom:1px solid #ddd;
-	padding-bottom:5px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+    height:52px;
+    line-height:50px;
+    margin:0;
+    padding: 0;
 }
 .sidebar ul{
 
-	padding-left:10px;
+    padding-left:10px;
 }
+.logBox{
+
+    
+    margin-top:0px;
+    padding-left:15px;
+    padding-top:15px;
+    min-height:200px;
+    background-color: white;
+    height:auto;
+    overflow:auto;
+}
+
+/* Box*/
+
+.box-heading h3{
+
+    margin:0;
+    padding:20px 0 20px 20px;
+    font-size:1.2em;
+    border-bottom:1px solid #e7e7e7;
+}
+
+.box{
+
+    background:#fff;
+}
+.box .box-content{
+
+    border:1px solid #e7e7e7;
+    border-top:none;
+    height:400px;
+    background-color:#fff;
+    padding:20px;
+    overflow: auto;
+}
+
 </style>
+
+
+
+<script src="main.js"></script>
+<script src="mat/js/ripples.min.js"></script>
+<script src="mat/js/material.min.js"></script>
+<script>
+    $(document).ready(function() {
+                $.material.init();
+            });
+</script>
 </body>
 
 </html>
