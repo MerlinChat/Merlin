@@ -32,6 +32,35 @@ var xmpp={
 
 	},
 
+	textToXml:function(text) {
+
+		if(window['DOMParser']) {
+
+			var parser=new DOMParser()
+			var doc=parser.parseFromString(text,'text/xml')
+		}
+		else if(window['ActiveXObject']) {
+
+			doc.async = false;
+			doc.loadXML(text);
+			
+		}
+		var elem = doc.documentElement;
+		if ($(elem).filter('parsererror').length > 0) {
+			return null
+		}
+		return elem
+	},
+
+	sendFromText:function(text){
+		
+		text=xmpp.textToXml(text)
+		if(text) {
+			
+			xmpp.send(text)
+		}
+	}
+
 }
 
 
@@ -198,6 +227,19 @@ app.controller("dashboardController",function($scope,$rootScope){
 		console.log($scope.consoleLogs)
 		$scope.consoleLogs.push({body:Strophe.serialize(body),type:type})
 		$scope.$apply()	
+	}
+
+	$scope.streamInput=''
+
+	$scope.sendStream=function(){
+
+		var text=$scope.streamInput
+		
+		if(text.length>0) {
+			
+			xmpp.sendFromText(text)
+		}
+
 	}
 })
 
