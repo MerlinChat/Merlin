@@ -1,0 +1,267 @@
+<!doctype html>
+<html ng-app="XmppDebugger">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="lib/fa/css/font-awesome.min.css">
+    <link href="mat/css/ripples.min.css" rel="stylesheet">
+     <link href="mat/css/material-wfont.min.css" rel="stylesheet">
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/strophejs/strophe.min.js"></script>
+    <title>XMPP Console and Debugger</title>
+</head>
+<body ng-controller="mainController">
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-md-12" style="padding-left:0; padding-right:0; margin-right:-1px;">
+        <nav class="navbar">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+
+
+                <a class="navbar-brand" href="#">
+                   Merlin Chat
+                </a>
+                <p class="navbar-text" ng-hide="mobile()">Chat at your will</p>
+
+            </div>
+
+
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="" ng-click="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            {{username}}
+            <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" ng-click="logout()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+            
+        </div>
+    </nav>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <div class="roster">
+                <ul class="roster">
+                    <li>Rohit Mulange</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="console box">
+                <div class="box-heading"><h3>Console</h3></div>
+                                <div class="box-content">
+                    <div class="stream" ng-repeat="log in consoleLogs">
+                        <p>{{ log.body }}</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-md-10">
+                <div class="textbox">
+                    <textarea ng-model="streamInput" id="streamInput"></textarea>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary btn-block btn-lg" ng-click="sendStream()">Submit</button></div>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+<style>
+/* Login Form */
+body{
+
+
+}
+nav.navbar {
+
+    margin-bottom:0;
+}
+nav.navbar-inverse{
+
+    background-color:#1D70B2;
+    border-color:#186CAD;
+}
+nav a,nav a:hover{
+
+    color: inherit;
+}
+nav.navbar-inverse .navbar-text {
+
+color:white;
+}
+nav.navbar-inverse .navbar-brand {
+
+color:white;
+}
+
+.navbar {
+
+    border-radius:0;
+}
+.navbar-inverse .navbar-nav li a {
+
+    color:#fff;
+}
+
+.navbar-inverse .navbar-nav li ul.dropdown-menu a {
+
+    color:inherit;
+}
+.navbar-inverse .navbar-nav  .open  a.dropdown-toggle,
+ .navbar-inverse .navbar-nav  .open  a.dropdown-toggle:hover,
+  .navbar-inverse .navbar-nav .open  a.dropdown-toggle:focus {
+    background-color: #186CAD;
+    color: #fff;
+}
+
+
+button.navbar-right, p.navbar-right{
+
+    margin-right:0;
+}
+button.menuToggle{
+    float:right;
+    margin-right:15px;
+}
+@media screen and (min-width: 1000px) {
+    
+    div.login-form {
+        padding:10% 10% 0 10%;
+    }
+}
+
+
+div.login-form .panel-body {
+    padding:30px;
+    background-color:#f7f7f7;
+}
+.btn,.panel,.form-control,.input-group,.input-group-addon{
+
+    border-radius:0;
+}
+div.form-group{
+
+    margin:23px 0px;
+}
+div.form-group.button{
+
+    margin-top:30px;
+
+}
+div.form-group.button button{
+
+    font-size:1.2em;
+          
+} 
+div.login-form h3{
+
+    font-weight:normal;
+    font-size:1.5em;
+}
+div.login-form label {
+
+    display:none;
+}
+
+/* Sidebar */
+.sidebar{
+
+	border-left:1px solid #e7e7e7;
+	overflow:auto;
+	background-color: #f8f8f8;
+    min-height:700px;
+    padding:0;
+}
+.sidebar h4{
+
+	text-align:center;
+	border-bottom:1px solid #ddd;
+    height:52px;
+    line-height:50px;
+    margin:0;
+    padding: 0;
+}
+.sidebar ul{
+
+	padding-left:10px;
+}
+.logBox{
+
+    
+    margin-top:0px;
+    padding-left:15px;
+    padding-top:15px;
+    min-height:200px;
+    background-color: white;
+    height:auto;
+    overflow:auto;
+}
+
+/* Box*/
+
+.box-heading h3{
+
+    margin:0;
+    padding:20px 0 20px 20px;
+    font-size:1.2em;
+    border-bottom:1px solid #e7e7e7;
+}
+
+.box{
+
+    background:#fff;
+}
+.box .box-content{
+
+    border:1px solid #e7e7e7;
+    border-top:none;
+    height:400px;
+    background-color:#fff;
+    padding:20px;
+}
+
+ul.roster{
+
+    padding-top:30px;
+    padding-left:0;
+    margin-left:0;
+}
+ul.roster li{
+
+    display: block;
+    height:40px;
+    line-height: 40px;
+    padding-left: 5px;
+
+}
+ul.roster li:hover{
+
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+</style>
+</body>
+
+</html>
