@@ -19,6 +19,7 @@ var app=angular.module("XmppDebugger",['ngRoute'])
 	})
 })
 
+
 app.controller("mainController",function($scope,$rootScope){
 
 	//Wait

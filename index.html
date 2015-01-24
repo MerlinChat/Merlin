@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="lib/fa/css/font-awesome.min.css">
     <link href="mat/css/ripples.min.css" rel="stylesheet">
-     <link href="mat/css/material-wfont.min.css" rel="stylesheet">
+    <link href="mat/css/material-wfont.min.css" rel="stylesheet">
     <script src="lib/jquery.min.js"></script>
     <script src="lib/angular.min.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>
@@ -94,10 +94,11 @@ div.login-form label {
 /* Sidebar */
 .sidebar{
 
-    border-left:1px solid #e7e7e7;
+    border-right:1px solid #e7e7e7;
     overflow:auto;
-    background-color: #f8f8f8;
-    min-height:700px;
+    background-color: #eeeeee;
+    min-height:600px;
+    height:600px;
     padding:0;
 }
 .sidebar h4{
@@ -142,6 +143,7 @@ div.login-form label {
 .box .box-content{
 
     border:1px solid #e7e7e7;
+    border-left:none;
     border-top:none;
     height:400px;
     background-color:#fff;
@@ -164,15 +166,44 @@ ul.roster{
 ul.roster li{
 
     display: block;
-    height:40px;
-    line-height: 40px;
+    height:45px;
+    line-height:45px;
     padding-left: 15px;
+    padding-right: 15px;
 
 }
 ul.roster li:hover{
 
-    background-color: #eeeeee;
+    background-color: #ddd;
     cursor: pointer;
+}
+img.propic{
+
+    width:32px;
+    height:32px;
+    margin-top:-2px;
+    margin-right:10px;
+    vertical-align: middle
+}
+i.online{
+    color:#70CC14;
+}
+i.offline{
+
+    color:#888;
+}
+
+i.away{
+    color:#D6D033;
+}
+
+i.dnd {
+
+    color:red;
+}
+.box-container{
+
+    padding-left:0 !important;
 }
 </style>
 

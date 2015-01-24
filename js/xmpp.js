@@ -61,22 +61,81 @@ var xmpp={
 		}
 	},
 
-	fetchRoster:function(customHandler){
+	fetchRoster : function(){
 
-		if(!(customHandler)) {
-			handler=xmpp.defaultHandlers.roster
+	
+		console.log("Fetching Roster")
+
+		if(!(xmpp.customHandlers.roster)) {
+			console.log(xmpp.customHandlers)
+			console.log("No customHandlers fro roster")
+			handler=function(iq){
+				
+				xmpp.defaultHandlers.roster(iq)
+
+			}
 		}
-		else {
+		else if(xmpp.customHandlers.roster.override) {
+			console.log("override fro roster")
+			handler=function(iq){
 
+				xmpp.customHandlers.roster.handler(iq)
+
+			}
+
+		}
+
+		else {
+			console.log("All handlers for roster")
 			handler=function(iq){
 
 				xmpp.defaultHandlers.roster(iq)
-				customHandler(iq)
+				xmpp.customHandlers.roster.handler(iq)
 			}
 		}
 		var iq=$iq({type:'get'}).c('query',{xmlns:'jabber:iq:roster'})
 		xmpp.sendIQ(iq,handler)
 
+	},
+
+	fetchVcard:function(to){
+		
+		
+
+		if(!(xmpp.customHandlers.vcard)) {
+			
+			handler=xmpp.defaultHandlers.vcard
+		}
+		else if(xmpp.customHandlers.vcard.override) {
+			console.log("override for vcard")
+			handler=function(iq){
+
+				xmpp.customHandlers.vcard.handler(iq)
+
+			}
+
+		}
+
+		else {
+			
+			handler=function(iq){
+
+				xmpp.defaultHandlers.vcard(iq)
+				xmpp.customHandlers.vcard.handler(iq)
+			}
+		}
+		var iq=$iq({type:'get',to:to}).c('vCard',{xmlns:'vcard-temp'})
+		xmpp.sendIQ(iq,handler)
+	},
+
+	fetchPics:function(){
+		
+		for(var key in xmpp.roster){
+			if(xmpp.roster[key].status!='offline') {
+				xmpp.fetchVcard(xmpp.roster[key].jid)
+			}
+
+		}
 	},
 	
 	sendIQ:function(iq,handler) {
@@ -90,9 +149,10 @@ var xmpp={
 
 		var presenceHandler=function(presence){
 
+			console.log("1");
+			console.log(presence)
 			if(xmpp.customHandlers.presence){
 
-				
 				if(!(xmpp.customHandlers.presence.override)){
 
 					xmpp.defaultHandlers.presence(presence)
@@ -102,6 +162,7 @@ var xmpp={
 			else {
 				xmpp.defaultHandlers.presence(presence)
 			}
+			return true
 		}
 
 		xmpp.conn.addHandler(presenceHandler,null,'presence')
@@ -121,21 +182,34 @@ var xmpp={
 
 			//Default Roster Handler. 
 			//This roster is not registered using addHandler but used dynamically for sendIQ
-
 			console.log(iq)
 			$(iq).find('item').each(function(){
 				var contact={}
 				contact.jid=$(this).attr('jid')
 				contact.name=$(this).attr('name') || contact.jid
 				contact.jid=Strophe.getBareJidFromJid(contact.jid)
-				contact.presence='offline'
+				contact.status='offline'
 				if(!(xmpp.roster[contact.jid])) {
 					xmpp.roster[contact.jid]=contact
+					xmpp.roster[contact.jid].photo='views/default-propic.png'
+					xmpp.roster[contact.jid].photoStatus=true
 				}
 			})
 		},
 
-		
+		vcard: function(iq) {
+			var jid=$(iq).attr('from')
+			jid=Strophe.getBareJidFromJid(jid)
+			if($(iq).find('vCard').find('PHOTO')) {
+				var photo=$(iq).find('vCard').find('PHOTO').find('BINVAL').text()
+
+				if(xmpp.roster[jid] ) {
+				
+					xmpp.roster[jid].photo='data:image/png;base64,'+photo
+				}
+			}
+		},
+
 		presence:function(presence){
 
 			//Default Presence handler updates the presence of default roster only
@@ -143,24 +217,37 @@ var xmpp={
 
 			var type=$(presence).attr('type')
 			var from=$(presence).attr('from')
+
 			if(type!=='error') {
 				var status='offline'
 				var jid=Strophe.getBareJidFromJid(from)
+
 				if(xmpp.roster[jid]) {
-
+					console.log('inhere')
 					if(type!=='unavailable') {
+						status='online'
+						if($(presence).find('show')) {
+							var show=$(presence).find('show').text()
+							if(show==''||show=='chat'){
 
-						var show=$(presence).find('show').text()
-						if(show==''||show=='chat'){
+								status='online'
+							} 
+							else if(show=='away') {
 
-							status='online'
-						} 
-						else {
+								status='away'
+							}
+							else if(show=='dnd') {
 
-							status='away'
+								status='dnd'
+							}
+							else {
+
+								status=show
+							}
 						}
-
+						console.log(status)
 					}
+
 					xmpp.roster[jid].status=status
 				}
 			}

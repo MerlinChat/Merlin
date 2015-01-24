@@ -47,8 +47,6 @@ app.controller("loginController",function($scope,$rootScope){
 
 					$rootScope.$broadcast("statusChange", {status:"Connected"})
 					$rootScope.$broadcast("loginSuccess", { username:$scope.loginFormData.username})
-					xmpp.fetchRoster()
-
 
 				}
 

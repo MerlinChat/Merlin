@@ -1,4 +1,20 @@
 var app=angular.module("XmppDebugger")
+
+app.filter("contactList",function(){
+
+    return function(contacts) {
+    	var contactList={}
+    	for(var key in contacts) {
+
+    		if(contacts[key].status!='offline') {
+
+    			contactList[key]=contacts[key]
+    		}
+    	}
+    	return contactList
+    }
+})
+
 app.controller("dashboardController",function($scope,$rootScope){
 
 	//Dashboard
@@ -31,18 +47,37 @@ app.controller("dashboardController",function($scope,$rootScope){
 
 
 	xmpp.registerHandler('presence',function (presence){
+
+		
+		$rootScope.$broadcast('rosterUpdate',{})
+		xmpp.fetchPics()
+
+	})
+	xmpp.registerHandler('roster',function (iq){
+
+		
+		$rootScope.$broadcast('rosterUpdate',{})
+		xmpp.presence()
+		
+	})
+
+	xmpp.registerHandler('vcard',function (iq){
 		$rootScope.$broadcast('rosterUpdate',{})
 	})
 
+	
 	xmpp.setupHandlers()
-	xmpp.presence()
+	
+	xmpp.fetchRoster()
 	
 	$scope.consoleLogs=[]
 	
 	$scope.show_traffic=function (body,type) {
 
 		$scope.consoleLogs.push({body:Strophe.serialize(body),type:type})
+	
 		$scope.$apply()	
+
 	}
 
 	$scope.streamInput=''
@@ -63,10 +98,37 @@ app.controller("dashboardController",function($scope,$rootScope){
 
 		return $scope.roster;
 	}
+	$scope.getStatusIcon=function(jid){
+		
+		var classIcon="fa "
+		if($scope.roster[jid]) {
+
+			if($scope.roster[jid].status=="online") {
+				classIcon +=' online fa-circle'
+
+			}
+			else if($scope.roster[jid].status=="away") {
+				classIcon +=' away fa-arrow-circle-right'
+
+			}
+			else if($scope.roster[jid].status=="offline") {
+				classIcon +=' offline fa-times-circle'
+
+			}
+			else if($scope.roster[jid].status=="dnd") {
+				classIcon +='dnd fa-minus-circle'
+
+			}
+			else {
+				classIcon +=$scope.roster[jid].status
+			}
+		}
+		return classIcon
+	}
 	$scope.$on("rosterUpdate",function (event,body){
 
 		$scope.roster=xmpp.getDefaultRoster()
-		$scope.apply()
+		$scope.$apply()
 
 	})
 
