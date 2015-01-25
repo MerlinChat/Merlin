@@ -67,8 +67,7 @@ var xmpp={
 		console.log("Fetching Roster")
 
 		if(!(xmpp.customHandlers.roster)) {
-			console.log(xmpp.customHandlers)
-			console.log("No customHandlers fro roster")
+
 			handler=function(iq){
 				
 				xmpp.defaultHandlers.roster(iq)
@@ -76,7 +75,7 @@ var xmpp={
 			}
 		}
 		else if(xmpp.customHandlers.roster.override) {
-			console.log("override fro roster")
+			
 			handler=function(iq){
 
 				xmpp.customHandlers.roster.handler(iq)
@@ -86,7 +85,7 @@ var xmpp={
 		}
 
 		else {
-			console.log("All handlers for roster")
+		
 			handler=function(iq){
 
 				xmpp.defaultHandlers.roster(iq)
@@ -149,8 +148,6 @@ var xmpp={
 
 		var presenceHandler=function(presence){
 
-			console.log("1");
-			console.log(presence)
 			if(xmpp.customHandlers.presence){
 
 				if(!(xmpp.customHandlers.presence.override)){
@@ -182,7 +179,7 @@ var xmpp={
 
 			//Default Roster Handler. 
 			//This roster is not registered using addHandler but used dynamically for sendIQ
-			console.log(iq)
+		
 			$(iq).find('item').each(function(){
 				var contact={}
 				contact.jid=$(this).attr('jid')
@@ -223,7 +220,7 @@ var xmpp={
 				var jid=Strophe.getBareJidFromJid(from)
 
 				if(xmpp.roster[jid]) {
-					console.log('inhere')
+
 					if(type!=='unavailable') {
 						status='online'
 						if($(presence).find('show')) {
@@ -245,7 +242,6 @@ var xmpp={
 								status=show
 							}
 						}
-						console.log(status)
 					}
 
 					xmpp.roster[jid].status=status

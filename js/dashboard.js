@@ -14,16 +14,70 @@ app.filter("contactList",function(){
     	return contactList
     }
 })
+app.filter("name",function(){
+	var maxsize=13
+    return function(name) {
+    	if(name.length>maxsize) {
+
+    		name=name.substr(0,maxsize-1)
+    		name=name+'..'
+
+    	}
+    	return name
+    }
+})
+
+
 
 app.controller("dashboardController",function($scope,$rootScope){
 
-	//Dashboard
+	//Dashboard Controller
 
+	var maxHeight=window.innerHeight
+	var calculatedHeight=120+50+angular.element('.text-box-container').height()
 
+	angular.element('.sidebar .scroller').css('height',(maxHeight-62)+'px')
+
+	angular.element('.box .scroller').css('height',(maxHeight-calculatedHeight)+'px')
 	$scope.logout=function(){
 
 		xmpp.disconnect()
 	}
+	$scope.streamInput=""
+	angular.element('textarea#streamInput').bind('change',function(){
+	
+		$scope.forceAdjust()
+	})
+
+	angular.element('textarea#streamInput').bind('keydown',function(){
+	
+		$scope.forceAdjust()
+	})
+
+	angular.element('textarea#streamInput').bind('keyup',function(){
+		$scope.forceAdjust()
+	})
+	$scope.forceAdjust=function(){
+
+
+
+		var calculatedHeight=120+50+angular.element('.text-box-container').height()
+		if(maxHeight-calculatedHeight > 100) {
+			angular.element('.box .scroller').css('height',(maxHeight-calculatedHeight)+'px')
+		}
+	}
+	$scope.$watch("streamInput", function(newValue, oldValue) {
+		
+		$scope.forceAdjust()
+ 	})
+
+
+})
+
+
+app.controller("consoleController",function($scope,$rootScope){
+
+	//Console Controller
 
 	$scope.$on("streamIncoming",function (event,body){
 
@@ -45,6 +99,40 @@ app.controller("dashboardController",function($scope,$rootScope){
 		$rootScope.$broadcast("streamOutgoing", {body:body})
 	}
 
+	
+	$scope.consoleLogs=[]
+	
+	$scope.show_traffic=function (body,type) {
+
+		$scope.consoleLogs.push({body:Strophe.serialize(body),type:type})
+	
+		$scope.$apply()	
+
+	}
+
+	$scope.streamInput=''
+
+	$scope.sendStream=function(){
+
+		var text=$scope.streamInput
+		
+		if(text.length>0) {
+			
+			xmpp.sendFromText(text)
+		}
+
+	}
+
+
+
+
+
+}) 
+
+
+app.controller("rosterController",function($scope,$rootScope){
+
+	//Roster Controller
 
 	xmpp.registerHandler('presence',function (presence){
 
@@ -70,28 +158,8 @@ app.controller("dashboardController",function($scope,$rootScope){
 	
 	xmpp.fetchRoster()
 	
-	$scope.consoleLogs=[]
 	
-	$scope.show_traffic=function (body,type) {
-
-		$scope.consoleLogs.push({body:Strophe.serialize(body),type:type})
 	
-		$scope.$apply()	
-
-	}
-
-	$scope.streamInput=''
-
-	$scope.sendStream=function(){
-
-		var text=$scope.streamInput
-		
-		if(text.length>0) {
-			
-			xmpp.sendFromText(text)
-		}
-
-	}
 	$scope.roster=xmpp.getDefaultRoster()
 
 	$scope.getRoster=function(){
@@ -125,6 +193,7 @@ app.controller("dashboardController",function($scope,$rootScope){
 		}
 		return classIcon
 	}
+	
 	$scope.$on("rosterUpdate",function (event,body){
 
 		$scope.roster=xmpp.getDefaultRoster()

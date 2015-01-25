@@ -1,0 +1,261 @@
+/* Login Form */
+body{
+    background-color: #eeeeee;
+
+}
+nav.navbar {
+
+    margin-bottom:0;
+}
+nav.navbar-inverse{
+
+    background-color:#1D70B2;
+    border-color:#186CAD;
+}
+nav a,nav a:hover{
+
+    color: inherit;
+}
+nav.navbar-inverse .navbar-text {
+
+color:white;
+}
+nav.navbar-inverse .navbar-brand {
+
+color:#f5f5f5;
+}
+.navbar {
+
+    border-radius:0;
+}
+.navbar-inverse .navbar-nav li a {
+
+    color:#fff;
+}
+
+.navbar-inverse .navbar-nav li ul.dropdown-menu a {
+
+    color:inherit;
+}
+.navbar-inverse .navbar-nav  .open  a.dropdown-toggle,
+ .navbar-inverse .navbar-nav  .open  a.dropdown-toggle:hover,
+  .navbar-inverse .navbar-nav .open  a.dropdown-toggle:focus {
+    background-color: #186CAD;
+    color: #fff;
+}
+
+
+button.navbar-right, p.navbar-right{
+
+    margin-right:0;
+}
+button.menuToggle{
+    float:right;
+    margin-right:15px;
+}
+@media screen and (min-width: 1000px) {
+    
+    div.login-form {
+        padding:10% 10% 0 10%;
+    }
+}
+.panel{
+
+    box-shadow:0 1px 6px rgba(0,0,0,.12),0 1px 6px rgba(0,0,0,.12)
+
+}
+
+div.login-form .panel-body {
+    padding:30px;
+    background-color:#f7f7f7;
+}
+.btn,.panel,.form-control,.input-group,.input-group-addon{
+
+    border-radius:0;
+}
+div.form-group{
+
+    margin:23px 0px;
+}
+div.form-group.button{
+
+    margin-top:30px;
+
+}
+div.form-group.button button{
+
+    font-size:1.2em;
+          
+} 
+div.login-form h3{
+
+    font-weight:normal;
+    font-size:1.5em;
+}
+div.login-form label {
+
+    display:none;
+}
+
+/* Sidebar */
+.sidebar{
+
+    border-right:1px solid #dddddd;
+    overflow:hidden;
+    background-color: #eeeeee;
+    padding:0;
+
+
+}
+
+.sidebar.sidebar-right{
+
+    border-left:1px solid #dddddd;
+    border-right:none;
+
+
+}
+
+.scroller {
+    overflow-y: hidden;
+    position: relative;
+    overflow:hidden; 
+}
+
+.sidebar h4{
+
+    text-align:center;
+    border-bottom:1px solid #ddd;
+    height:52px;
+    line-height:50px;
+    margin:0;
+    padding: 0;
+}
+.sidebar ul{
+
+    padding-left:10px;
+}
+.logBox{
+
+    
+    margin-top:0px;
+    padding-left:15px;
+    padding-top:15px;
+    min-height:200px;
+    background-color: white;
+    height:auto;
+    overflow:auto;
+}
+
+/* Box*/
+
+.box-heading h3{
+
+    margin:0;
+    padding:20px 0 20px 20px;
+    font-size:1.2em;
+    border-bottom:1px solid #dddddd;
+}
+
+.box{
+
+    background:#fff;
+}
+.box .box-content{
+
+    border:none;
+    border-left:none;
+    border-top:none;
+    background-color:#fff;
+    padding:20px;
+}
+
+ul.roster{
+
+    padding-top:10px;
+    padding-left:0;
+    margin-left:0;
+}
+ul.roster li{
+
+    display: block;
+    height:45px;
+    line-height:45px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 0.9em;
+    overflow:hidden;
+
+}
+ul.roster li:hover{
+
+    background-color: #ddd;
+    cursor: pointer;
+}
+img.propic{
+
+    width:32px;
+    height:32px;
+    margin-top:-2px;
+    margin-right:10px;
+    vertical-align: middle
+}
+span.status{
+
+    font-size:0.8em;
+}
+i.online{
+    color:#70CC14;
+}
+i.offline{
+
+    color:#888;
+}
+
+i.away{
+    color:#D6D033;
+}
+
+i.dnd {
+
+    color:red;
+}
+.box-container{
+
+    padding-left:0 !important;
+    padding-right:0 !important;
+}
+
+.input-box {
+
+    height:auto;
+}
+.input-box #streamInput{
+    height:auto;
+    overflow:auto;
+    border:none;
+    min-height:60px;
+    resize:none;
+    display:block;
+    width:100%;
+    border:none;
+    padding: 10px;
+}
+.input-box textarea#streamInput:focus{
+    border:none;
+    outline:none;
+}
+
+.button{
+
+    height:35px;
+}
+.text-box-container{
+
+    background-color: white;
+    border:1px solid #dddddd;
+    padding-bottom:10px;
+    padding-right:10px;
+    margin:10px;
+    margin-bottom:10px;
+}

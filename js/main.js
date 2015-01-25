@@ -1,4 +1,4 @@
-var app=angular.module("XmppDebugger",['ngRoute'])
+var app=angular.module("XmppDebugger",['ngRoute','perfect_scrollbar','monospaced.elastic'])
 .config(function ($routeProvider) {
 
 	$routeProvider.when('/',{
