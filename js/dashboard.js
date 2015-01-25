@@ -34,9 +34,9 @@ app.controller("dashboardController",function($scope,$rootScope){
 	//Dashboard Controller
 
 	var maxHeight=window.innerHeight
-	var calculatedHeight=120+50+angular.element('.text-box-container').height()
+	var calculatedHeight=120+80+angular.element('.text-box-container').height()
 
-	angular.element('.sidebar .scroller').css('height',(maxHeight-62)+'px')
+	angular.element('.sidebar .scroller').css('height',(maxHeight-57)+'px')
 
 	angular.element('.box .scroller').css('height',(maxHeight-calculatedHeight)+'px')
 	$scope.logout=function(){
@@ -61,7 +61,7 @@ app.controller("dashboardController",function($scope,$rootScope){
 
 
 
-		var calculatedHeight=120+50+angular.element('.text-box-container').height()
+		var calculatedHeight=120+80+angular.element('.text-box-container').height()
 		if(maxHeight-calculatedHeight > 100) {
 			angular.element('.box .scroller').css('height',(maxHeight-calculatedHeight)+'px')
 		}

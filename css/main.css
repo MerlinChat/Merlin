@@ -1,16 +1,19 @@
 /* Login Form */
 body{
-    background-color: #eeeeee;
+    background-color:#eee;
 
 }
 nav.navbar {
 
-    margin-bottom:0;
+    margin-bottom:0px;
+    z-index:4;
 }
+
 nav.navbar-inverse{
 
     background-color:#1D70B2;
     border-color:#186CAD;
+    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
 }
 nav a,nav a:hover{
 
@@ -60,14 +63,15 @@ button.menuToggle{
     }
 }
 .panel{
-
-    box-shadow:0 1px 6px rgba(0,0,0,.12),0 1px 6px rgba(0,0,0,.12)
+    
+    box-shadow:0 1px 6px rgba(0,0,0,.2),0 1px 6px rgba(0,0,0,.2);
+    
 
 }
 
 div.login-form .panel-body {
     padding:30px;
-    background-color:#f7f7f7;
+    background-color:#fff;
 }
 .btn,.panel,.form-control,.input-group,.input-group-addon{
 
@@ -102,8 +106,11 @@ div.login-form label {
 
     border-right:1px solid #dddddd;
     overflow:hidden;
-    background-color: #eeeeee;
+    background-color: #fff;
     padding:0;
+    min-height:300px;
+    box-shadow:0 1px 7px rgba(0,0,0,.2);
+    z-index:3;
 
 
 }
@@ -121,7 +128,10 @@ div.login-form label {
     position: relative;
     overflow:hidden; 
 }
+.box-container .scroller{
 
+     border-bottom: 1px solid #eee;
+}
 .sidebar h4{
 
     text-align:center;
@@ -152,8 +162,9 @@ div.login-form label {
 .box-heading h3{
 
     margin:0;
-    padding:20px 0 20px 20px;
-    font-size:1.2em;
+    padding:17px 0 17px 17px;
+    font-size:1em;
+    font-weight: bold;
     border-bottom:1px solid #dddddd;
 }
 
@@ -168,6 +179,7 @@ div.login-form label {
     border-top:none;
     background-color:#fff;
     padding:20px;
+
 }
 
 ul.roster{
@@ -189,7 +201,7 @@ ul.roster li{
 }
 ul.roster li:hover{
 
-    background-color: #ddd;
+    background-color: #f3f3f3;
     cursor: pointer;
 }
 img.propic{
@@ -222,8 +234,11 @@ i.dnd {
 }
 .box-container{
 
-    padding-left:0 !important;
-    padding-right:0 !important;
+    padding:20px;
+    padding-bottom: 0;
+    padding-top: 30px;
+    padding-left: 30px;
+    
 }
 
 .input-box {
@@ -258,4 +273,21 @@ i.dnd {
     padding-right:10px;
     margin:10px;
     margin-bottom:10px;
+    font-size: 0.9em;
+}
+
+.btn {
+    box-shadow:0 4px 7px rgba(0,0,0,.25);
+
+}
+.btn.btn-primary:hover{
+    background-color:#337ab7 ;
+    border-color:#2e6da4;
+}
+.btn:hover{
+    box-shadow:0 4px 7px rgba(0,0,0,.5);
+}
+.text-box-container{
+    border-top:1px solid #ddd;
+
 }
