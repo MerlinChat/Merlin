@@ -10,10 +10,17 @@ app.filter("contactList",function(){
 
     			contactList[key]=contacts[key]
     		}
+    		else if(xmpp.messages[key]) {
+
+    			contactList[key]=contacts[key]
+
+    		}
     	}
     	return contactList
     }
 })
+
+
 app.filter("name",function(){
 	var maxsize=13
     return function(name) {
@@ -32,6 +39,10 @@ app.filter("name",function(){
 app.controller("dashboardController",function($scope,$rootScope){
 
 	//Dashboard Controller
+
+	$scope.activeChat=false
+
+	$scope.activeJid=""
 
 	var maxHeight=window.innerHeight
 	var calculatedHeight=120+80+angular.element('.text-box-container').height()
@@ -70,6 +81,13 @@ app.controller("dashboardController",function($scope,$rootScope){
 		
 		$scope.forceAdjust()
  	})
+
+ 	$scope.selectBuddy=function(jid){
+
+ 		$scope.activeChat=true
+ 		$scope.activeJid=jid
+
+ 	}
 
 
 })
@@ -138,7 +156,7 @@ app.controller("rosterController",function($scope,$rootScope){
 
 		
 		$rootScope.$broadcast('rosterUpdate',{})
-		xmpp.fetchPics()
+		
 
 	})
 	xmpp.registerHandler('roster',function (iq){
@@ -148,6 +166,14 @@ app.controller("rosterController",function($scope,$rootScope){
 		xmpp.presence()
 		
 	})
+	xmpp.registerHandler('message',function (message){
+
+		
+		$rootScope.$broadcast('newMessage',{message:message})
+
+		
+	})
+
 
 	xmpp.registerHandler('vcard',function (iq){
 		$rootScope.$broadcast('rosterUpdate',{})
@@ -200,5 +226,119 @@ app.controller("rosterController",function($scope,$rootScope){
 		$scope.$apply()
 
 	})
+	$scope.$on("newMessage",function (event,body){
+		
+		$scope.roster=xmpp.getDefaultRoster()
+		$scope.$apply()
+
+	})
+
+
+})
+
+
+app.controller("chatController",function($scope,$rootScope){
+
+	$scope.getName=function(jid) {
+
+
+		var roster=xmpp.getDefaultRoster()
+		if(roster[jid]) {
+
+			return roster[jid].name
+		}
+		else return jid
+	}
+
+	$scope.getPhoto= function(jid) {
+
+		var roster=xmpp.getDefaultRoster()
+		if(roster[jid]) {
+
+			return roster[jid].photo
+		}
+		else return 'views/default-propic.png'
+
+	}
+
+	$scope.getMessages=function(jid) {
+
+
+	}
+
+	$scope.sendMessage=function(jid,message) {
+
+
+	}
+	$scope.$on("newMessage",function (event,body){
+	
+		$scope.$apply()
+
+		$(".box-container .scroller").scrollTop($('.box-container .box-content').height());
+		$(".box-container .scroller").perfectScrollbar('update');
+
+	})
+
+	$scope.messages=[]
+
+	$scope.fetchMessages=function(jid){
+
+	
+		if(xmpp.messages[jid]) {
+
+			$scope.messages=xmpp.messages[jid]
+
+		}
+		else{
+
+			$scope.messages=[]
+		}
+		return $scope.messages
+	}
+
+	$scope.renderNameLeft=function(message) {
+
+		var name=$scope.getName(message.from)
+		if(message.sent) {
+
+			return name
+		}
+		return ''
+
+
+	}
+
+	$scope.renderNameRight=function(message) {
+
+		var name=$scope.getName(message.from)
+		if(!message.sent) {
+
+			return name
+		}
+		return ''
+	}
+
+	$scope.streamInput=''
+	$scope.sendMessage=function(jid) {
+
+		var body=$scope.streamInput
+		xmpp.sendMessage(jid,body)
+		$scope.streamInput=''
+
+	}
+
+	$scope.getClass=function(message) {
+
+		if(message.sent) {
+
+			return "message message-right"
+		}
+		return "message message-left"
+
+
+	}
+
+
+
 
 })

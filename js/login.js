@@ -4,8 +4,8 @@ app.controller("loginController",function($scope,$rootScope){
 	//Wait
 	$scope.loginFormData ={
 
-		username:"rohitgeekman@jabber.hot-chilli.net",
-		password:"joannerowling"
+		username:"",
+		password:""
 	}
 
 	$scope.fromError=false;

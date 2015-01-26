@@ -24,9 +24,8 @@
           <ul class="dropdown-menu" role="menu">
             <li><a href="#" ng-click="logout()">Logout</a></li>
           </ul>
-
         </li>
-      </ul> <img  class="propic navbar-propic navbar-right" src="views/default-propic.png" />
+      </ul>
     </div>
             
         </div>
@@ -38,71 +37,23 @@
             <div class="roster">
                 <ul class="roster">
                     <li ng-repeat="contact in roster | contactList">
-                        <div ng-click="selectBuddy(contact.jid)">
-                        <img class="propic" ng-src="{{contact.photo }}" />
+                        <img ng-show="contact.photoStatus" class="propic" ng-src="{{contact.photo }}" />
                         <span class="contact-name">{{ contact.name | name }}</span>
-                        <span class="badge badge-danger" ng-show="contact.unreadStatus">{{contact.unreadCount}}</span>
                         <span class="status pull-right"><i ng-class="getStatusIcon(contact.jid)"></i></span>
-                        </div>
                     </li>
                 </ul>
-
             </div>
             </perfect-scrollbar>
         </div>
-        <div class="col-md-offset-2 col-md-8 box-container" ng-controller="chatController">
-                
-                <div class="nochat" ng-hide="activeChat">
-                    <h3><i class="fa fa-hand-o-left fa-5x"></i></h3>
-                    <h3>Select a buddy from your buddylist and start talking!</h3>
-                </div>
-
-            <div class="panel" ng-show="activeChat">
+        <div class="col-md-offset-2 col-md-8 box-container" ng-controller="consoleController">
+            <div class="panel">
             <div class="console box" >
-                <div class="box-heading"><h3>
-                    <img class="propic" src="views/default-propic.png" ng-src="{{getPhoto(activeJid)}} " />
-                    
-                    {{ getName(activeJid) }}
-
-                </h3></div>
+                <div class="box-heading"><h3>Console</h3></div>
                                     <perfect-scrollbar class="scroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
                 <div class="box-content">
 
-                    <div class="stream">
-                       <div class="row" ng-repeat="message in fetchMessages(activeJid)">
-                       <div class="message" ng-class="getClass(message)">
-                            <div class="sender">
-                            <h4>
-                                {{renderNameLeft(message)}}
-                    <img class="propic" src="views/default-propic.png" ng-src="{{ getPhoto(message.from) }}" />
-                    
-                            {{renderNameRight(message)}}
-                    </h4>
-                            </div>
-                            <div class="message-content panel">
-                                {{ message.msg }}
-                            </div>
-
-                       </div>
-                   </div>
-
-
-
-                   <!--
-                    <div class="row">
-                        <div class="message message-right">
-                            <div class="sender">
-                            <h4>
-                              Shweta Wankhede <img class="propic" src="views/default-propic.png" /></h4>
-                            </div>
-                            <div class="message-content panel">
-                
-                                Hi there dear Rohit
-                            </div>
-                        </div>
-
-                   </div>
-               -->
+                    <div class="stream" ng-repeat="log in consoleLogs">
+                        <p>{{ log.body }}</p>
 
                     </div>
                     
@@ -119,7 +70,7 @@
                 </div>
                
                 <div class="button">
-                <button class="btn btn-primary pull-right" ng-click="sendMessage(activeJid)">Send</button></div>
+                <button class="btn btn-primary pull-right" ng-click="sendStream()">Send</button></div>
                 </div>
                 </div>
             </div>

@@ -1,15 +1,19 @@
 var xmpp={
 
 	conn:null,
+	jid:'',
 	connect:function (jid,password,changeHandler){
 
 
-		xmpp.conn=new Strophe.Connection("http://rohit.com:5280/http-bind");
+		xmpp.conn=new Strophe.Connection("http://bosh.metajack.im:5280/xmpp-httpbind");
 		xmpp.conn.connect(jid,password,changeHandler)
+		xmpp.jid=jid
 	},
 	disconnect:function(){
 
 		xmpp.conn.disconnect()
+		xmpp.roster={}
+
 	},
 	presence:function(toUid){
 
@@ -130,7 +134,7 @@ var xmpp={
 	fetchPics:function(){
 		
 		for(var key in xmpp.roster){
-			if(xmpp.roster[key].status!='offline') {
+			if(xmpp.roster[key].status!='offline' && (xmpp.roster[key].photoStatus==false)) {
 				xmpp.fetchVcard(xmpp.roster[key].jid)
 			}
 
@@ -140,6 +144,24 @@ var xmpp={
 	sendIQ:function(iq,handler) {
 	
 		xmpp.conn.sendIQ(iq,handler)
+	},
+
+	sendMessage:function(jid,body) {
+
+		xmpp.send($msg({to: jid,type: 'chat'}).c('body').t(body))
+		console.log("msg sent")
+		
+		if(!xmpp.messages[jid]) {
+			xmpp.messages[jid]=[]
+		}
+
+		xmpp.messages[jid].push({
+			from:xmpp.jid,
+			msg:body,
+			sent:true,
+			status:'read'	
+		})
+
 	},
 
 	setupHandlers:function(){
@@ -171,6 +193,28 @@ var xmpp={
 
 
 		//Message
+
+		var  messageHandler=function(message){
+			
+			if(xmpp.customHandlers.message){
+
+				if(!(xmpp.customHandlers.message.override)){
+
+					xmpp.defaultHandlers.message(message)
+				}
+				xmpp.customHandlers.message.handler(message)
+			}
+			else {
+				xmpp.defaultHandlers.message(message)
+			}
+			
+
+			return true
+		}
+
+		xmpp.conn.addHandler(messageHandler,null,'message','chat')
+
+
 	},
 
 	defaultHandlers:{
@@ -189,7 +233,7 @@ var xmpp={
 				if(!(xmpp.roster[contact.jid])) {
 					xmpp.roster[contact.jid]=contact
 					xmpp.roster[contact.jid].photo='views/default-propic.png'
-					xmpp.roster[contact.jid].photoStatus=true
+					xmpp.roster[contact.jid].photoStatus=false
 				}
 			})
 		},
@@ -245,8 +289,104 @@ var xmpp={
 					}
 
 					xmpp.roster[jid].status=status
+				
+					if($(presence).find('x').find('photo')) {
+						
+						var photo=$(presence).find('x').find('photo')
+						
+						if(photo.length>0) {
+
+							photo=photo.text()
+							if(photo.length>0) {
+
+								
+								photoOld=''
+								if(xmpp.roster[jid].photoHash) {
+
+									photoOld=xmpp.roster[jid].photoHash
+								}
+								if(photo!==photoOld) {
+									console.log('Load photo for '+xmpp.roster[jid].name)
+									xmpp.fetchVcard(jid)
+									xmpp.roster[jid].photoHash=photo
+								}
+
+							}
+						}
+					}
+
+
 				}
 			}
+		},
+		message:function(message){
+
+
+			console.log(message)
+			//updates the default message cache
+			var jid=$(message).attr('from')
+			jid=Strophe.getBareJidFromJid(jid)
+			var sentStatus=false
+
+			if(jid==xmpp.jid) {
+
+				sentStatus=true
+				var jid=$(message).attr('to')
+				jid=Strophe.getBareJidFromJid(jid)
+			}
+
+			console.log(jid)
+
+			var body = $(message).find('html > body')
+			console.log(body)
+			if(body.length===0) {
+			
+				body = $(message).find('body')
+				if (body.length > 0) {
+					body = body.text()
+				} 
+				else {
+					body = null
+				}
+			} 
+			else {
+			
+				body=body.contents()
+			}
+			
+			if(!xmpp.messages[jid]) {
+				xmpp.messages[jid]=[]
+			}
+
+			if(body.length>0) {
+
+				xmpp.messages[jid].push({
+
+					from:jid,
+					msg:body,
+					sent:sentStatus,
+					status:'unread'	
+				})
+
+			}
+			if(!xmpp.roster[jid]) {
+
+				var contact={}
+				contact.jid=jid
+				contact.name=jid
+				contact.jid=Strophe.getBareJidFromJid(contact.jid)
+				contact.status='offline'
+
+				xmpp.roster[jid]=contact
+				xmpp.roster[jid].photo='views/default-propic.png'
+				xmpp.roster[jid].photoStatus=false
+				
+			}
+
+			xmpp.roster[jid].unreadStatus=true
+			if(!(xmpp.roster[jid].unreadCount)) xmpp.roster[jid].unreadCount=0
+			xmpp.roster[jid].unreadCount++
+			console.log(xmpp.roster)
 		},
 
 		iq:function(){
@@ -285,5 +425,6 @@ var xmpp={
 	//System maintained roster, requires use od default handlers for proper update
 
 	roster:{},
+	messages:{}
 
 }
