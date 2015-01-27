@@ -37,7 +37,7 @@
             <div class="roster">
                 <ul class="roster">
                     <li ng-repeat="contact in roster | contactList">
-                        <img ng-show="contact.photoStatus" class="propic" ng-src="{{contact.photo }}" />
+                        <img class="propic" ng-src="{{contact.photo }}" />
                         <span class="contact-name">{{ contact.name | name }}</span>
                         <span class="status pull-right"><i ng-class="getStatusIcon(contact.jid)"></i></span>
                     </li>

@@ -5,7 +5,7 @@ var xmpp={
 	connect:function (jid,password,changeHandler){
 
 
-		xmpp.conn=new Strophe.Connection("http://bosh.metajack.im:5280/xmpp-httpbind");
+		xmpp.conn=new Strophe.Connection("http://rohit.com:5280/http-bind");
 		xmpp.conn.connect(jid,password,changeHandler)
 		xmpp.jid=jid
 	},

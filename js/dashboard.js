@@ -45,20 +45,27 @@ app.controller("dashboardController",function($scope,$rootScope){
 	$scope.activeJid=""
 
 	var maxHeight=window.innerHeight
+
 	var calculatedHeight=120+80+angular.element('.text-box-container').height()
 
 	angular.element('.sidebar .scroller').css('height',(maxHeight-57)+'px')
 
 	angular.element('.box .scroller').css('height',(maxHeight-calculatedHeight)+'px')
+
+
 	$scope.logout=function(){
 
 		xmpp.disconnect()
 	}
+
 	$scope.streamInput=""
+
+
 	angular.element('textarea#streamInput').bind('change',function(){
 	
 		$scope.forceAdjust()
 	})
+
 
 	angular.element('textarea#streamInput').bind('keydown',function(){
 	
@@ -66,8 +73,12 @@ app.controller("dashboardController",function($scope,$rootScope){
 	})
 
 	angular.element('textarea#streamInput').bind('keyup',function(){
+
 		$scope.forceAdjust()
+
 	})
+
+
 	$scope.forceAdjust=function(){
 
 
@@ -77,6 +88,8 @@ app.controller("dashboardController",function($scope,$rootScope){
 			angular.element('.box .scroller').css('height',(maxHeight-calculatedHeight)+'px')
 		}
 	}
+
+
 	$scope.$watch("streamInput", function(newValue, oldValue) {
 		
 		$scope.forceAdjust()
@@ -85,10 +98,42 @@ app.controller("dashboardController",function($scope,$rootScope){
  	$scope.selectBuddy=function(jid){
 
  		$scope.activeChat=true
+ 
+ 		var oldjid=$scope.activeJid
+
  		$scope.activeJid=jid
+ 		
+
+ 		if(oldjid !== jid) {
+ 			
+ 			$(".box-container .scroller").scrollTop(0);
+ 		}
+ 		$(".box-container .scroller").scrollTop($('.box-container .box-content').height());
+		$(".box-container .scroller").perfectScrollbar('update');
+		angular.element('textarea#streamInput').focus()
+
+
 
  	}
 
+ 	$scope.getSelfPhoto=function(){
+
+ 		return xmpp.photo
+ 	
+ 	}
+
+ 	$scope.getSelfName=function() {
+
+ 		if(xmpp.fullName.length>0) {
+
+ 			return xmpp.fullName
+ 		}
+ 		else {
+
+ 			return xmpp.jid
+ 		}
+ 	}
+ 	xmpp.fetchSelfVcard()
 
 })
 
@@ -124,7 +169,10 @@ app.controller("consoleController",function($scope,$rootScope){
 
 		$scope.consoleLogs.push({body:Strophe.serialize(body),type:type})
 	
-		$scope.$apply()	
+				
+		if(!$scope.$$phase) {
+			$scope.$apply()
+		}
 
 	}
 
@@ -154,7 +202,6 @@ app.controller("rosterController",function($scope,$rootScope){
 
 	xmpp.registerHandler('presence',function (presence){
 
-		
 		$rootScope.$broadcast('rosterUpdate',{})
 		
 
@@ -163,6 +210,7 @@ app.controller("rosterController",function($scope,$rootScope){
 
 		
 		$rootScope.$broadcast('rosterUpdate',{})
+
 		xmpp.presence()
 		
 	})
@@ -223,13 +271,19 @@ app.controller("rosterController",function($scope,$rootScope){
 	$scope.$on("rosterUpdate",function (event,body){
 
 		$scope.roster=xmpp.getDefaultRoster()
-		$scope.$apply()
+				
+		if(!$scope.$$phase) {
+			$scope.$apply()
+		}
 
 	})
 	$scope.$on("newMessage",function (event,body){
 		
 		$scope.roster=xmpp.getDefaultRoster()
-		$scope.$apply()
+				
+		if(!$scope.$$phase) {
+			$scope.$apply()
+		}
 
 	})
 
@@ -239,8 +293,39 @@ app.controller("rosterController",function($scope,$rootScope){
 
 app.controller("chatController",function($scope,$rootScope){
 
+
+	$scope.activateEnter=true
+	angular.element('textarea#streamInput').keypress(function(eventdata){
+		if( $scope.activateEnter && (!eventdata.shiftKey) &&(eventdata.keyCode==13)){
+			if($scope.streamInput.trim().length>0) {
+				angular.element('.text-box-container button').trigger('click')
+				return false
+			}
+
+		}
+	})
+
+	angular.element('.text-box-container').click(function(){
+
+		angular.element('textarea#streamInput').focus()
+
+	})
+
 	$scope.getName=function(jid) {
 
+		if(jid==xmpp.jid) {
+
+			if(xmpp.fullName.length>0) {
+
+ 				return xmpp.fullName
+ 			}
+ 			else {
+
+ 				return xmpp.jid
+ 			}
+		}
+
+		
 
 		var roster=xmpp.getDefaultRoster()
 		if(roster[jid]) {
@@ -251,6 +336,13 @@ app.controller("chatController",function($scope,$rootScope){
 	}
 
 	$scope.getPhoto= function(jid) {
+
+		if(jid==xmpp.jid) {
+
+
+ 				return xmpp.photo
+ 
+		}
 
 		var roster=xmpp.getDefaultRoster()
 		if(roster[jid]) {
@@ -266,20 +358,23 @@ app.controller("chatController",function($scope,$rootScope){
 
 	}
 
-	$scope.sendMessage=function(jid,message) {
 
 
-	}
 	$scope.$on("newMessage",function (event,body){
 	
-		$scope.$apply()
+				
+		if(!$scope.$$phase) {
+			$scope.$apply()
+		}
 
 		$(".box-container .scroller").scrollTop($('.box-container .box-content').height());
 		$(".box-container .scroller").perfectScrollbar('update');
 
 	})
 
+
 	$scope.messages=[]
+
 
 	$scope.fetchMessages=function(jid){
 
@@ -296,6 +391,7 @@ app.controller("chatController",function($scope,$rootScope){
 		return $scope.messages
 	}
 
+
 	$scope.renderNameLeft=function(message) {
 
 		var name=$scope.getName(message.from)
@@ -308,6 +404,7 @@ app.controller("chatController",function($scope,$rootScope){
 
 	}
 
+
 	$scope.renderNameRight=function(message) {
 
 		var name=$scope.getName(message.from)
@@ -318,12 +415,25 @@ app.controller("chatController",function($scope,$rootScope){
 		return ''
 	}
 
+
 	$scope.streamInput=''
+
+
 	$scope.sendMessage=function(jid) {
 
-		var body=$scope.streamInput
-		xmpp.sendMessage(jid,body)
-		$scope.streamInput=''
+		if($scope.streamInput.trim().length>0) {
+			
+			var body=$scope.streamInput
+			xmpp.sendMessage(jid,body)
+			$scope.streamInput=''
+		
+			if(!$scope.$$phase) {
+				$scope.$apply()
+			}
+		}
+		$(".box-container .scroller").scrollTop($('.box-container .box-content').height())
+		$(".box-container .scroller").perfectScrollbar('update');
+		angular.element('textarea#streamInput').focus()
 
 	}
 
@@ -337,7 +447,7 @@ app.controller("chatController",function($scope,$rootScope){
 
 
 	}
-
+	
 
 
 

@@ -19,14 +19,14 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="" ng-click="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            {{username}}
+            {{getSelfName()}}
             <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#" ng-click="logout()">Logout</a></li>
           </ul>
 
         </li>
-      </ul> <img  class="propic navbar-propic navbar-right" src="views/default-propic.png" />
+      </ul> <img  class="propic navbar-propic navbar-right" ng-src="{{getSelfPhoto()}}" />
     </div>
             
         </div>
@@ -50,7 +50,7 @@
             </div>
             </perfect-scrollbar>
         </div>
-        <div class="col-md-offset-2 col-md-8 box-container" ng-controller="chatController">
+        <div class="col-md-offset-2 col-md-8 box-container" ng-controller="chatController" >
                 
                 <div class="nochat" ng-hide="activeChat">
                     <h3><i class="fa fa-hand-o-left fa-5x"></i></h3>
@@ -80,7 +80,7 @@
                     </h4>
                             </div>
                             <div class="message-content panel">
-                                {{ message.msg }}
+                                <p>{{ message.msg }}</p>
                             </div>
 
                        </div>
@@ -117,10 +117,18 @@
                 <div class="textbox">
                     <textarea ng-model="streamInput" id="streamInput" msd-elastic></textarea>
                 </div>
-               
-                <div class="button">
+                <div>
+                    <div class="row">
+                                          <div class="checkbox col-md-6">
+    <label style="line-height:20px;">
+      <input type="checkbox" ng-model="activateEnter">Enter is Send
+    </label>
+  </div>
+                <div class="button col-md-6">
                 <button class="btn btn-primary pull-right" ng-click="sendMessage(activeJid)">Send</button></div>
                 </div>
+
+</div>
                 </div>
             </div>
             
@@ -129,6 +137,8 @@
         </div>
     </div>
             </div>
+
+
 
                 <!--
 
