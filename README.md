@@ -3,7 +3,7 @@ Merlin
 
 ## Merlin chat
 
-*Merlin Chat* is an under development fully featured multi user _XMPP client_ written with *Angular JS*  and using *Strophejs*
+**Merlin Chat** is an under development fully featured multi user _XMPP client_ written with **Angular JS**  and using **Strophejs**
 
 ##### Tasks Completed
 
