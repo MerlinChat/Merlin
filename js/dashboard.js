@@ -102,7 +102,9 @@ app.controller("dashboardController",function($scope,$rootScope){
  		var oldjid=$scope.activeJid
 
  		$scope.activeJid=jid
- 		
+ 		if(!$scope.$$phase) {
+			$scope.$apply()
+		}
 
  		if(oldjid !== jid) {
  			

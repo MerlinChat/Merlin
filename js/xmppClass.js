@@ -37,8 +37,7 @@ function Xmpp() {
 	this.connect=function (jid,password,changeHandler){
 
 
-		this.conn=new Strophe.Connection("http://bosh.metajack.im:5280/xmpp-httpbind")
-
+		this.conn=new Strophe.Connection("http://bosh.metajack.im:5280/xmpp-httpbind");
 		this.conn.connect(jid,password,changeHandler)
 		this.jid=jid
 	}
