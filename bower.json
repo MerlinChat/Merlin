@@ -1,0 +1,34 @@
+{
+  "name": "Merlin Chat",
+  "version": "0.0.0",
+  "homepage": "https://github.com/MerlinChat/Merlin",
+  "authors": [
+    "Rohit Mulange <rohit@rohit.codes>"
+  ],
+  "description": "Secure Chat Client",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.11",
+    "angular-elastic": "~2.4.2",
+    "angular-route": "~1.3.11",
+    "bootstrap": "~3.3.2",
+    "jquery": "~2.1.3",
+    "angular-perfect-scrollbar": "~0.0.3",
+    "font-awesome": "~4.3.0",
+    "perfect-scrollbar": "~0.5.8",
+    "strophejs": "~1.1.1"
+  },
+  "resolutions": {
+    "perfect-scrollbar": "~0.4.11"
+  }
+}
