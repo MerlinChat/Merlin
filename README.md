@@ -20,9 +20,17 @@ npm install
 
 ```
 node server.js
-
+```
+###### Run at a specific port
+To run at port, say, 2000
+```
+node server.js 2000
 ```
 
+To run at port 80, you may need priviliged access
+```
+sudo node server.js 80
+```
 ##### Tasks Completed
 
 1. Basic Connection and Streams (Console or debugging)
