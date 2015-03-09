@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="lib/perfect-scrollbar/min/perfect-scrollbar.min.css" />
+    
+
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="lib/strophejs/strophe.min.js"></script>
+    <script src="lib/perfect-scrollbar/min/perfect-scrollbar.min.js"></script>
+    <script src="lib/perfect-scrollbar/min/perfect-scrollbar.with-mousewheel.min.js"></script>
+    <script src="lib/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js"></script>
+    <script src="lib/angular-elastic/elastic.js"></script>
+
+
+    <title>XMPP Console and Debugger</title>
+</head>
+<body ng-controller="mainController">
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-md-12" style="padding-left:0; padding-right:0; margin-right:-1px;">
+        <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+
+
+                <a class="navbar-brand" href="#">
+                   Merlin Chat
+                </a>
+                <p class="navbar-text" ng-hide="mobile()">Chat at your will</p>
+
+            </div>
+
+
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="" ng-click="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            {{username}}
+            <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" ng-click="logout()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+            
+        </div>
+    </nav>
+    <div class="container-fluid page-start">
+    <div class="row">
+
+        <div class="col-md-2 sidebar" ng-controller="rosterController" >
+            <perfect-scrollbar class="scroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
+            <div class="roster">
+                <ul class="roster">
+                    <li ng-repeat="contact in roster | contactList">
+                        <img ng-show="contact.photoStatus" class="propic" ng-src="{{contact.photo }}" />
+                        <span class="contact-name">{{ contact.name | name }}</span>
+                        <span class="status pull-right"><i ng-class="getStatusIcon(contact.jid)"></i></span>
+                    </li>
+                </ul>
+            </div>
+            </perfect-scrollbar>
+        </div>
+        <div class="col-md-8 box-container" ng-controller="consoleController">
+            <div class="panel">
+            <div class="console box" >
+                <div class="box-heading"><h3>Console</h3></div>
+                                    <perfect-scrollbar class="scroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
+                <div class="box-content">
+
+                    <div class="stream" ng-repeat="log in consoleLogs">
+                        <p>{{ log.body }}</p>
+
+                    </div>
+                    
+                </div>
+                </perfect-scrollbar>
+            </div>
+            <div class="input-box">
+            <div class="row">
+
+            <div class="col-md-12 text-box-col">
+                <div class="text-box-container">
+                <div class="textbox">
+                    <textarea ng-model="streamInput" id="streamInput" msd-elastic="\n"></textarea>
+                </div>
+                <div class="button">
+                <button class="btn btn-primary pull-right" ng-click="sendStream()">Send</button></div>
+                </div>
+                </div>
+            </div>
+            
+                
+
+        </div>
+    </div>
+            </div>
+
+
+            <!--
+                    <div class="col-md-2 sidebar sidebar-right" ng-controller="rosterController" >
+            <perfect-scrollbar class="scroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
+            <div class="roster">
+
+            </div>
+            </perfect-scrollbar>
+        </div>
+-->
+
+
+        </div>
+    </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+<script src="js/xmpp.js"></script>
+<script src="js/main.js"></script>
+<script src="js/login.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+
+</html>

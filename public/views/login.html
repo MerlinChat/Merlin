@@ -1,0 +1,41 @@
+<div class="container-fluid" style="margin-top:30px;">
+    <div class="row">
+           <div class="col-md-offset-3 col-xs-12 col-sm-12  col-md-6 ">
+                <div class="login-form">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                            <h3>Login</h3>
+                            <form role="form" novalidate name="loginForm" ng-submit="login(loginForm)">
+                                <div class="form-group" ng-class="getClass(loginForm.username)">
+                                    <label for="loginform_email">Username</label>
+                                    <div class="input-group">
+                                    <input type="text" ng-minlength="5" ng-maxlength="70" ng-model="loginFormData.username" class="form-control" id="loginform_email" name="username" placeholder="JabberId" required />
+                                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                    </div>
+                                    <span id="helpBlock" class="help-block" ng-show="loginForm.username.$invalid &&  loginForm.username.$dirty">Invaid Username</span>
+
+                                 </div>
+                                    <div class="form-group" ng-class="getClass(loginForm.password)">
+                                    <label for="loginform_pass">Password</label>
+                                    <div class="input-group">
+                                    <input type="password" ng-minlength="7" ng-maxlength="20" ng-model="loginFormData.password" class="form-control" id="loginform_pass" name="password" placeholder="Password" required>
+                                    <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                                    </div>
+                                    <span id="helpBlock" class="help-block" ng-show="loginForm.password.$invalid &&  loginForm.password.$dirty">Invaid Password</span>
+
+                                 </div>
+                                 <div class="form-group button">
+                                 <button type="submit" ng-disabled="buttonDisable" class="btn btn-default btn-block btn-primary btn-lg">
+                                    <i class="fa fa-arrow-circle-o-right" ng-hide="buttonLoading"></i>
+                                    <i class="fa fa-spinner fa-spin" ng-show="buttonLoading"></i>
+                                     Login</button>
+                                 </div>
+                                 <p class="help-block"><a href="">Need Help?</a></p>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html ng-app="MerlinChat">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="bower_components/perfect-scrollbar/min/perfect-scrollbar.min.css" />
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/strophe.min.js"></script>
+    <script src="bower_components/perfect-scrollbar/min/perfect-scrollbar.min.js"></script>
+    <script src="bower_components/perfect-scrollbar/min/perfect-scrollbar.with-mousewheel.min.js"></script>
+    <script src="bower_components/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js"></script>
+    <script src="bower_components/angular-elastic/elastic.js"></script>
+
+
+    <title>XMPP Console and Debugger</title>
+</head>
+<body ng-controller="mainController">
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-md-12" style="padding-left:0; padding-right:0; margin-right:-1px;">
+<div ng-view></div>
+<div></div>
+
+</div>
+</div>
+</div>
+<script src="js/xmpp.js"></script>
+<script src="js/app.js"></script>
+<script src="js/login-controller.js"></script>
+<script src="js/dashboard-controller.js"></script>
+<script src="js/roster-controller.js"></script>
+<script src="js/chat-controller.js"></script>
+
+
+
+</body>
+
+</html>

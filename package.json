@@ -1,0 +1,10 @@
+{
+	"name" : "Merlin",
+	"version" : "0.0.1",
+	"description" : "The Javascript Jabber Client",
+	"dependencies" : {
+		"node-xmpp-bosh" : "~0.7",
+		"mime" : "~1.2.7"
+	}
+
+}
