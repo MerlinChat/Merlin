@@ -5,6 +5,24 @@ Merlin
 
 **Merlin Chat** is an under development fully featured multi user _XMPP client_ written with **Angular JS**  and using **Strophejs**
 
+#### Download
+
+* [Download the Zip](https://github.com/MerlinChat/Merlin/archive/master.zip)
+* Or clone the repo  `git clone https://github.com/MerlinChat/Merlin.git`
+
+#### Setup
+
+```
+npm install
+```
+
+#### Run
+
+```
+node server.js
+
+```
+
 ##### Tasks Completed
 
 1. Basic Connection and Streams (Console or debugging)
